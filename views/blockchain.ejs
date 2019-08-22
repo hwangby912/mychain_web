@@ -1,4 +1,70 @@
 <% layout('layout/layout')%>
 <div class="container">
-  <h1>홈페이지 명</h1>
+   <h1>Block List</h1>
 </div>
+<div class="container" style="overflow-x: scroll;white-space: nowrap;">
+   <div class="container">
+      <% blocks.forEach((e1, idx) => { %>
+      <% let str_border = (selectedIdx != null && selectedIdx == e1.index)? 'border-primary':'' %>
+      <div class="card <%= str_border %>" onclick="showBlock(<%=idx%>);">
+         <div class="card-header">
+            <h4>Block <%=e1.index %></h4>
+         </div>
+         <div class="card-body">
+            <ul class="list-group list-group-flush">
+               <li class="list-group-item">
+                  <span>Hash</span>
+                  <div class='text-truncate'><%=e1.curHash %></div>
+               </li>
+               <li class="list-group-item">
+                  <span>PrevHash</span>
+                  <div class='text-truncate'><%=e1.prevHash %></div>
+               </li>
+               <li class="list-group-item">
+                  <span>Nonce</span>
+                  <div class='text-truncate'><%=e1.nonce%></div>
+               </li>
+               <li class="list-group-item">
+                  <span>Timestamp</span>
+                  <div class='text-truncate'><%=e1.timestamp%></div>
+               </li>
+            </ul>
+         </div>
+      </div>
+      <% }) %>
+   </div>
+</div>
+<div class = "container">
+   <% if(selectedIdx > 0) { %>
+   <h1>Transaction List (Block <%= selectedIdx %>)</h1>
+   <table class = 'table table-hover table-striped'>
+      <thead>
+         <tr>
+            <th>#</th>
+            <th>From</th>
+            <th>To</th>
+            <th>Amount</th>
+            <th>Valid?</th>
+         </tr>
+      </thead>
+      <tbody>
+         <% txs.forEach((e1, idx) => {%>
+         <tr>
+            <td><%= idx %></td>
+            <td class='text-truncate' style = 'max-width: 100px;'><%= e1.fromAddress %></td>
+            <td class='text-truncate' style = 'max-width: 100px;'><%= e1.toAddress %></td>
+            <td><%= e1.amount %></td>
+            <td></td>
+         </tr>
+         <% }) %>
+      </tbody>
+   </table>
+   <% } %>
+</div>
+
+<script>
+   function showBlock(index) {
+      console.log('idx : ', index);
+      location.href = '/blockchain/block/' + index;
+   }
+</script>
